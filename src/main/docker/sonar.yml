@@ -1,0 +1,8 @@
+version: '2'
+services:
+    basketball-sonar:
+        container_name: basketball-sonar
+        image: sonarqube:6.1-alpine
+        ports:
+            - 9000:9000
+            - 9092:9092
