@@ -27,7 +27,6 @@
     "nativeLanguage": "es",
     "languages": [
       "es"
-    ],
-    "serviceDiscoveryType": false
+    ]
   }
 }
