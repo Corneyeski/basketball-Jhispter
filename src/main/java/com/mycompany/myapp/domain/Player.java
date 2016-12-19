@@ -1,9 +1,12 @@
 package com.mycompany.myapp.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 import com.mycompany.myapp.domain.enumeration.Position;
@@ -45,6 +48,10 @@ public class Player implements Serializable {
 
     @ManyToOne
     private Team team;
+
+    @OneToMany(mappedBy = "player")
+    @JsonIgnore
+    private Set<FavUser> favUsers = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -156,6 +163,31 @@ public class Player implements Serializable {
 
     public void setTeam(Team team) {
         this.team = team;
+    }
+
+    public Set<FavUser> getFavUsers() {
+        return favUsers;
+    }
+
+    public Player favUsers(Set<FavUser> favUsers) {
+        this.favUsers = favUsers;
+        return this;
+    }
+
+    public Player addFavUser(FavUser favUser) {
+        favUsers.add(favUser);
+        favUser.setPlayer(this);
+        return this;
+    }
+
+    public Player removeFavUser(FavUser favUser) {
+        favUsers.remove(favUser);
+        favUser.setPlayer(null);
+        return this;
+    }
+
+    public void setFavUsers(Set<FavUser> favUsers) {
+        this.favUsers = favUsers;
     }
 
     @Override

@@ -1,0 +1,25 @@
+{
+    "basketballApp": {
+        "gameUser" : {
+            "home": {
+                "title": "Game Users",
+                "createLabel": "Crear nuevo Game User",
+                "createOrEditLabel": "Crear o editar Game User",
+                "search": "Search for Game User"
+            },
+            "created": "Un nuevo Game User ha sido creado con el identificador {{ param }}",
+            "updated": "Un Game User ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Game User ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Game User {{ id }}?"
+            },
+            "detail": {
+                "title": "Game User"
+            },
+            "points": "Points",
+            "time": "Time",
+            "user": "User",
+            "game": "Game"
+        }
+    }
+}

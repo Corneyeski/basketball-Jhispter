@@ -1,0 +1,30 @@
+{
+    "basketballApp": {
+        "player" : {
+            "home": {
+                "title": "Players",
+                "createLabel": "Crear nuevo Player",
+                "createOrEditLabel": "Crear o editar Player",
+                "search": "Search for Player"
+            },
+            "created": "Un nuevo Player ha sido creado con el identificador {{ param }}",
+            "updated": "Un Player ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Player ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Player {{ id }}?"
+            },
+            "detail": {
+                "title": "Player"
+            },
+            "name": "Name",
+            "surname": "Surname",
+            "birthdate": "Birthdate",
+            "nbaskets": "Nbaskets",
+            "nassists": "Nassists",
+            "nrebots": "Nrebots",
+            "pos": "Pos",
+            "team": "Team",
+            "favUser": "Fav User"
+        }
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "basketballApp": {
+        "Position" : {
+            "null": "",
+            "ALERO": "ALERO",
+            "BASE": "BASE",
+            "PIBOT": "PIBOT"
+        }
+    }
+}

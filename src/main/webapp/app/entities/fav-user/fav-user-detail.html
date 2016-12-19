@@ -1,0 +1,35 @@
+
+<div>
+    <h2><span data-translate="basketballApp.favUser.detail.title">Fav User</span> {{vm.favUser.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="basketballApp.favUser.liked">Liked</span></dt>
+        <dd>
+            <span>{{vm.favUser.liked}}</span>
+        </dd>
+        <dt><span data-translate="basketballApp.favUser.time">Time</span></dt>
+        <dd>
+            <span>{{vm.favUser.time | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="basketballApp.favUser.user">User</span></dt>
+        <dd>
+            {{vm.favUser.user.login}}
+        </dd>
+        <dt><span data-translate="basketballApp.favUser.player">Player</span></dt>
+        <dd>
+            <a ui-sref="player-detail({id:vm.favUser.player.id})">{{vm.favUser.player.name}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="fav-user-detail.edit({id:vm.favUser.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-xs hidden-sm" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

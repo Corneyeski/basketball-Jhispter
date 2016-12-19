@@ -1,0 +1,42 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "gameLocalTeam",
+            "otherEntityName": "game",
+            "otherEntityRelationshipName": "gameLocalTeam"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "gameVisitorTeam",
+            "otherEntityName": "game",
+            "otherEntityRelationshipName": "gameVisitorTeam"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "player",
+            "otherEntityName": "player",
+            "otherEntityRelationshipName": "team"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "city",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "fundate",
+            "fieldType": "LocalDate"
+        }
+    ],
+    "changelogDate": "20161216062157",
+    "entityTableName": "team",
+    "dto": "no",
+    "pagination": "infinite-scroll",
+    "service": "no"
+}

@@ -1,0 +1,25 @@
+{
+    "basketballApp": {
+        "favUser" : {
+            "home": {
+                "title": "Fav Users",
+                "createLabel": "Crear nuevo Fav User",
+                "createOrEditLabel": "Crear o editar Fav User",
+                "search": "Search for Fav User"
+            },
+            "created": "Un nuevo Fav User ha sido creado con el identificador {{ param }}",
+            "updated": "Un Fav User ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Fav User ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Fav User {{ id }}?"
+            },
+            "detail": {
+                "title": "Fav User"
+            },
+            "liked": "Liked",
+            "time": "Time",
+            "user": "User",
+            "player": "Player"
+        }
+    }
+}

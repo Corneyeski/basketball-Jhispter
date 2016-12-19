@@ -1,0 +1,56 @@
+entity Player{
+name String,
+surname String,
+ birthdate LocalDate,
+nbaskets Integer,
+nassists Integer,
+nrebots Integer, 
+pos Position
+}
+
+enum Position {
+    ALERO, BASE, PIBOT
+}
+
+entity Team {
+name String,
+city String,
+fundate LocalDate
+}
+
+entity Game {
+localp Integer,
+localv Integer,
+times ZonedDateTime,
+timef ZonedDateTime
+}
+entity FavUser {
+liked Boolean,
+time ZonedDateTime
+}
+entity GameUser{
+points Integer,
+time ZonedDateTime
+}
+relationship ManyToOne{
+    Game{gameLocalTeam(name)} to Team{gameLocalTeam},
+    Game{gameVisitorTeam(name)} to Team{gameVisitorTeam}
+}
+relationship ManyToOne {
+	Player{team(name)} to Team{player}
+}
+relationship ManyToOne{
+	FavUser{user(login)} to User,
+    FavUser{player(name)} to Player{FavUser}
+}
+relationship ManyToOne{
+	GameUser{user(login)} to User,
+    GameUser{game} to Game{gameUser}
+}
+paginate Team, Player with infinite-scroll
+
+
+
+
+
+

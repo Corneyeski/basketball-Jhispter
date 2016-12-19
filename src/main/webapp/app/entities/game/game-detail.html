@@ -1,0 +1,43 @@
+
+<div>
+    <h2><span data-translate="basketballApp.game.detail.title">Game</span> {{vm.game.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="basketballApp.game.localp">Localp</span></dt>
+        <dd>
+            <span>{{vm.game.localp}}</span>
+        </dd>
+        <dt><span data-translate="basketballApp.game.localv">Localv</span></dt>
+        <dd>
+            <span>{{vm.game.localv}}</span>
+        </dd>
+        <dt><span data-translate="basketballApp.game.times">Times</span></dt>
+        <dd>
+            <span>{{vm.game.times | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="basketballApp.game.timef">Timef</span></dt>
+        <dd>
+            <span>{{vm.game.timef | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="basketballApp.game.gameLocalTeam">Game Local Team</span></dt>
+        <dd>
+            <a ui-sref="team-detail({id:vm.game.gameLocalTeam.id})">{{vm.game.gameLocalTeam.name}}</a>
+        </dd>
+        <dt><span data-translate="basketballApp.game.gameVisitorTeam">Game Visitor Team</span></dt>
+        <dd>
+            <a ui-sref="team-detail({id:vm.game.gameVisitorTeam.id})">{{vm.game.gameVisitorTeam.name}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="game-detail.edit({id:vm.game.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-xs hidden-sm" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

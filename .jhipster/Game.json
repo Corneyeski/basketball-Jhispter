@@ -1,0 +1,46 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "gameLocalTeam",
+            "otherEntityName": "team",
+            "otherEntityField": "name"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "gameVisitorTeam",
+            "otherEntityName": "team",
+            "otherEntityField": "name"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "gameUser",
+            "otherEntityName": "gameUser",
+            "otherEntityRelationshipName": "game"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "localp",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "localv",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "times",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "timef",
+            "fieldType": "ZonedDateTime"
+        }
+    ],
+    "changelogDate": "20161216062158",
+    "entityTableName": "game",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}

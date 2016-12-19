@@ -1,0 +1,70 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myGameLabel" data-translate="basketballApp.game.home.createOrEditLabel">Create or edit a Game</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.game.id">
+            <label for="id" data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.game.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="basketballApp.game.localp" for="field_localp">Localp</label>
+            <input type="number" class="form-control" name="localp" id="field_localp"
+                    ng-model="vm.game.localp"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="basketballApp.game.localv" for="field_localv">Localv</label>
+            <input type="number" class="form-control" name="localv" id="field_localv"
+                    ng-model="vm.game.localv"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="basketballApp.game.times" for="field_times">Times</label>
+                <div class="input-group">
+                    <input id="field_times" type="text" class="form-control" name="times" datetime-picker="{{dateformat}}" ng-model="vm.game.times" is-open="vm.datePickerOpenStatus.times"
+                      />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('times')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="basketballApp.game.timef" for="field_timef">Timef</label>
+                <div class="input-group">
+                    <input id="field_timef" type="text" class="form-control" name="timef" datetime-picker="{{dateformat}}" ng-model="vm.game.timef" is-open="vm.datePickerOpenStatus.timef"
+                      />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('timef')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+        </div>
+
+        <div class="form-group">
+            <label data-translate="basketballApp.game.gameLocalTeam" for="field_gameLocalTeam">Game Local Team</label>
+            <select class="form-control" id="field_gameLocalTeam" name="gameLocalTeam" ng-model="vm.game.gameLocalTeam" ng-options="team as team.name for team in vm.teams track by team.id">
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label data-translate="basketballApp.game.gameVisitorTeam" for="field_gameVisitorTeam">Game Visitor Team</label>
+            <select class="form-control" id="field_gameVisitorTeam" name="gameVisitorTeam" ng-model="vm.game.gameVisitorTeam" ng-options="team as team.name for team in vm.teams track by team.id">
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

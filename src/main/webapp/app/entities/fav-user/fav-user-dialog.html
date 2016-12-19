@@ -1,0 +1,54 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myFavUserLabel" data-translate="basketballApp.favUser.home.createOrEditLabel">Create or edit a Fav User</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.favUser.id">
+            <label for="id" data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.favUser.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="basketballApp.favUser.liked" for="field_liked">Liked</label>
+            <input type="checkbox" class="form-control" name="liked" id="field_liked"
+                    ng-model="vm.favUser.liked"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="basketballApp.favUser.time" for="field_time">Time</label>
+                <div class="input-group">
+                    <input id="field_time" type="text" class="form-control" name="time" datetime-picker="{{dateformat}}" ng-model="vm.favUser.time" is-open="vm.datePickerOpenStatus.time"
+                      />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('time')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+        </div>
+
+        <div class="form-group">
+            <label data-translate="basketballApp.favUser.user" for="field_user">User</label>
+            <select class="form-control" id="field_user" name="user" ng-model="vm.favUser.user" ng-options="user as user.login for user in vm.users track by user.id">
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label data-translate="basketballApp.favUser.player" for="field_player">Player</label>
+            <select class="form-control" id="field_player" name="player" ng-model="vm.favUser.player" ng-options="player as player.name for player in vm.players track by player.id">
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

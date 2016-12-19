@@ -1,9 +1,12 @@
 package com.mycompany.myapp.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -36,6 +39,10 @@ public class Game implements Serializable {
 
     @ManyToOne
     private Team gameVisitorTeam;
+
+    @OneToMany(mappedBy = "game")
+    @JsonIgnore
+    private Set<GameUser> gameUsers = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -121,6 +128,31 @@ public class Game implements Serializable {
 
     public void setGameVisitorTeam(Team team) {
         this.gameVisitorTeam = team;
+    }
+
+    public Set<GameUser> getGameUsers() {
+        return gameUsers;
+    }
+
+    public Game gameUsers(Set<GameUser> gameUsers) {
+        this.gameUsers = gameUsers;
+        return this;
+    }
+
+    public Game addGameUser(GameUser gameUser) {
+        gameUsers.add(gameUser);
+        gameUser.setGame(this);
+        return this;
+    }
+
+    public Game removeGameUser(GameUser gameUser) {
+        gameUsers.remove(gameUser);
+        gameUser.setGame(null);
+        return this;
+    }
+
+    public void setGameUsers(Set<GameUser> gameUsers) {
+        this.gameUsers = gameUsers;
     }
 
     @Override
