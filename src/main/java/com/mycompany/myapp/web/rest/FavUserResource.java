@@ -1,13 +1,20 @@
 package com.mycompany.myapp.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.mycompany.myapp.domain.DTO.JugadorDTO;
 import com.mycompany.myapp.domain.FavUser;
 
+import com.mycompany.myapp.domain.Player;
+import com.mycompany.myapp.domain.User;
 import com.mycompany.myapp.repository.FavUserRepository;
+import com.mycompany.myapp.repository.UserRepository;
+import com.mycompany.myapp.security.SecurityUtils;
 import com.mycompany.myapp.web.rest.util.HeaderUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +23,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,10 +36,11 @@ import java.util.Optional;
 public class FavUserResource {
 
     private final Logger log = LoggerFactory.getLogger(FavUserResource.class);
-        
+
     @Inject
     private FavUserRepository favUserRepository;
-
+    @Inject
+    private UserRepository userRepository;
     /**
      * POST  /fav-users : Create a new favUser.
      *
@@ -45,6 +55,11 @@ public class FavUserResource {
         if (favUser.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("favUser", "idexists", "A new favUser cannot already have an ID")).body(null);
         }
+        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
+
+       favUser.setUser(user);
+       favUser.setTime(ZonedDateTime.now());
+
         FavUser result = favUserRepository.save(favUser);
         return ResponseEntity.created(new URI("/api/fav-users/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("favUser", result.getId().toString()))
@@ -118,4 +133,53 @@ public class FavUserResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("favUser", id.toString())).build();
     }
 
+    @GetMapping("/top-players")
+    @Timed
+    public ResponseEntity<List<JugadorDTO>> getTopPlayers()
+        throws URISyntaxException {
+
+        log.debug("REST request to get TopPlayers");
+
+        List<Object[]> topPlayers = favUserRepository.findFavoritePlayers();
+
+        List<JugadorDTO> result = new ArrayList<>();
+
+        topPlayers.forEach(
+            topPlayer -> {
+                JugadorDTO p = new JugadorDTO();
+                p.setPlayer((Player) topPlayer[0]);
+                p.setCount((Long) topPlayer[1]);
+
+                result.add(p);
+            }
+
+        );
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/top-five-players")
+    @Timed
+    public ResponseEntity<List<JugadorDTO>> getFiveTopPlayers()
+        throws URISyntaxException {
+
+        log.debug("REST request to get TopPlayers");
+
+        Pageable pageable = new PageRequest(0, 5);
+
+        List<Object[]> topPlayers = favUserRepository.findFiveFavoritePlayers(pageable);
+
+        List<JugadorDTO> result = new ArrayList<>();
+
+        topPlayers.forEach(
+            topPlayer -> {
+                JugadorDTO p = new JugadorDTO();
+                p.setPlayer((Player) topPlayer[0]);
+                p.setCount((Long) topPlayer[1]);
+
+                result.add(p);
+            }
+
+        );
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 }

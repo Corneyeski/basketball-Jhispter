@@ -31,7 +31,7 @@ import java.util.Optional;
 public class PlayerResource {
 
     private final Logger log = LoggerFactory.getLogger(PlayerResource.class);
-        
+
     @Inject
     private PlayerRepository playerRepository;
 
@@ -124,6 +124,22 @@ public class PlayerResource {
         log.debug("REST request to delete Player : {}", id);
         playerRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("player", id.toString())).build();
+    }
+    /**
+     * GET  /players : get all the players.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of players in body
+     * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
+     */
+    @GetMapping("/playersByFavorite")
+    @Timed
+    public ResponseEntity<List<Player>> getAllPlayersByFavorite(@ApiParam Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Players");
+        Page<Player> page = playerRepository.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/players");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
 }
