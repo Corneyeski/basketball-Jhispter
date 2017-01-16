@@ -1,8 +1,11 @@
 package com.mycompany.myapp.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.mycompany.myapp.domain.DTO.GameDTO;
+import com.mycompany.myapp.domain.Game;
 import com.mycompany.myapp.domain.GameUser;
 
+import com.mycompany.myapp.repository.GameRepository;
 import com.mycompany.myapp.repository.GameUserRepository;
 import com.mycompany.myapp.web.rest.util.HeaderUtil;
 
@@ -27,9 +30,12 @@ import java.util.Optional;
 public class GameUserResource {
 
     private final Logger log = LoggerFactory.getLogger(GameUserResource.class);
-        
+
     @Inject
     private GameUserRepository gameUserRepository;
+
+    @Inject
+    private GameRepository gameRepository;
 
     /**
      * POST  /game-users : Create a new gameUser.
@@ -116,6 +122,17 @@ public class GameUserResource {
         log.debug("REST request to delete GameUser : {}", id);
         gameUserRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("gameUser", id.toString())).build();
+    }
+
+    @GetMapping("/avgGame/{id}")
+    public ResponseEntity<GameDTO> avgGame(Long idGame)throws URISyntaxException{
+
+        Game game = gameRepository.findOne(idGame);
+        Double avg = gameUserRepository.gameAvg(game);
+
+        GameDTO gameDTO = new GameDTO(game,avg);
+
+        return new ResponseEntity<>(gameDTO, HttpStatus.OK);
     }
 
 }
