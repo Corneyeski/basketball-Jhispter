@@ -28,8 +28,8 @@ public interface FavUserRepository extends JpaRepository<FavUser,Long> {
 
     List<Object[]> findFiveFavoritePlayers(Pageable pageable);
 
-    @Query("")
+    //@Query("")
 
-    List<Object[]> mostPopular();
+    //List<Object[]> mostPopular();
 
 }
