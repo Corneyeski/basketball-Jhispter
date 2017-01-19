@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -138,12 +139,23 @@ public class GameUserResource {
     }
 
     @GetMapping("/fiveGames")
-    public ResponseEntity<GameDTO> fiveGames()throws URISyntaxException{
+    public ResponseEntity<List<GameDTO>> fiveGames()throws URISyntaxException{
 
         Pageable pageable = new PageRequest(0, 5);
 
         List<Object[]> topGames = gameUserRepository.fiveFavoriteGames(pageable);
 
-        return new ResponseEntity<>( HttpStatus.OK);
+        List<GameDTO> result = new ArrayList<>();
+
+        topGames.forEach(
+            topGame -> {
+                GameDTO g = new GameDTO();
+                g.setgame((Game) topGame[0]);
+                g.setCount((Double) topGame[1]);
+
+                result.add(g);
+            }
+        );
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

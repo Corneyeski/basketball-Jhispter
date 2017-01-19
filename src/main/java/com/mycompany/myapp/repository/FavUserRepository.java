@@ -3,11 +3,15 @@ package com.mycompany.myapp.repository;
 import com.mycompany.myapp.domain.DTO.JugadorDTO;
 import com.mycompany.myapp.domain.FavUser;
 
+import com.mycompany.myapp.domain.Player;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.query.Param;
 
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.SortedMap;
 
 /**
  * Spring Data JPA repository for the FavUser entity.
@@ -27,6 +31,11 @@ public interface FavUserRepository extends JpaRepository<FavUser,Long> {
         "GROUP BY favUser.player order by count(favUser) desc")
 
     List<Object[]> findFiveFavoritePlayers(Pageable pageable);
+
+    @Query("select favUser.time, count(favUser) from FavUser favUser" +
+        "  where favUser.player = :player group by favUser.time")
+
+    SortedMap<LocalDate,Double> favoriteEvolutionPlayer(@Param("player")Player player);
 
     //@Query("")
 
