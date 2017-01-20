@@ -10,6 +10,8 @@ import org.springframework.data.repository.query.Param;
 
 
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedMap;
 
@@ -35,10 +37,10 @@ public interface FavUserRepository extends JpaRepository<FavUser,Long> {
     @Query("select favUser.time, count(favUser) from FavUser favUser" +
         "  where favUser.player = :player group by favUser.time")
 
-    SortedMap<LocalDate,Double> favoriteEvolutionPlayer(@Param("player")Player player);
+    List<Object[]>favoriteEvolutionPlayer(@Param("player")Player player);
 
-    //@Query("")
+    @Query("select favUser.time from FavUser favUser" +
+        "  where favUser.player = :player")
 
-    //List<Object[]> mostPopular();
-
+    List<ZonedDateTime> favoriteEvolutionPlayer2(@Param("player")Player player);
 }

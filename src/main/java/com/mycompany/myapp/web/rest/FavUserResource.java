@@ -1,18 +1,21 @@
 package com.mycompany.myapp.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.mycompany.myapp.domain.DTO.EvolutionjDTO;
 import com.mycompany.myapp.domain.DTO.JugadorDTO;
 import com.mycompany.myapp.domain.FavUser;
 
 import com.mycompany.myapp.domain.Player;
 import com.mycompany.myapp.domain.User;
 import com.mycompany.myapp.repository.FavUserRepository;
+import com.mycompany.myapp.repository.PlayerRepository;
 import com.mycompany.myapp.repository.UserRepository;
 import com.mycompany.myapp.security.SecurityUtils;
 import com.mycompany.myapp.web.rest.util.HeaderUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -23,10 +26,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing FavUser.
@@ -41,6 +45,8 @@ public class FavUserResource {
     private FavUserRepository favUserRepository;
     @Inject
     private UserRepository userRepository;
+    @Inject
+    private PlayerRepository playerRepository;
     /**
      * POST  /fav-users : Create a new favUser.
      *
@@ -180,6 +186,31 @@ public class FavUserResource {
             }
 
         );
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/evolution-player")
+    @Timed
+    public ResponseEntity<List<EvolutionjDTO>> evolutionPlayer(Long idPlayer){
+
+        Player p = new Player();
+        p = playerRepository.findOne(idPlayer);
+        //TODO añadir gestion de errores y añadir 404 si el player es null
+
+        List<ZonedDateTime> listFav = favUserRepository.favoriteEvolutionPlayer2(p);
+        ArrayList<EvolutionjDTO> evolution = new ArrayList<>();
+
+
+        listFav.parallelStream()
+            .map(zonedDateTime -> zonedDateTime.toLocalDate())
+            .collect(Collectors
+                .groupingBy(Function.identity(),Collectors.counting()))
+            .forEach((date,count) ->evolution.add(new EvolutionjDTO(date,count)));
+
+        List<EvolutionjDTO> result = evolution.stream()
+            .sorted(Comparator.comparing(EvolutionjDTO::getTime))
+            .collect(Collectors.toList());
+
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }
