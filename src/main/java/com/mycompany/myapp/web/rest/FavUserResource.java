@@ -1,6 +1,7 @@
 package com.mycompany.myapp.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.mycompany.myapp.domain.DTO.EvolutionGeneraljDTO;
 import com.mycompany.myapp.domain.DTO.EvolutionjDTO;
 import com.mycompany.myapp.domain.DTO.JugadorDTO;
 import com.mycompany.myapp.domain.FavUser;
@@ -197,7 +198,7 @@ public class FavUserResource {
         p = playerRepository.findOne(idPlayer);
         //TODO añadir gestion de errores y añadir 404 si el player es null
 
-        List<ZonedDateTime> listFav = favUserRepository.favoriteEvolutionPlayer2(p);
+        List<ZonedDateTime> listFav = favUserRepository.favoriteEvolutionPlayer(p);
         ArrayList<EvolutionjDTO> evolution = new ArrayList<>();
 
 
@@ -212,5 +213,36 @@ public class FavUserResource {
             .collect(Collectors.toList());
 
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/evolution-general-player")
+    @Timed
+    public ResponseEntity<List<EvolutionGeneraljDTO>> evolutionGeneralPlayer(){
+
+        List<EvolutionGeneraljDTO> evolutionGeneraljDTOList = new ArrayList<>();
+
+        List<Player> players = playerRepository.findAll();
+
+        players.forEach(player -> {
+
+            List<ZonedDateTime> listFav = favUserRepository.favoriteEvolutionPlayer(player);
+            ArrayList<EvolutionjDTO> evolution = new ArrayList<>();
+
+
+            listFav.parallelStream()
+                .map(zonedDateTime -> zonedDateTime.toLocalDate())
+                .collect(Collectors
+                    .groupingBy(Function.identity(),Collectors.counting()))
+                .forEach((date,count) ->evolution.add(new EvolutionjDTO(date,count)));
+
+            List<EvolutionjDTO> result = evolution.stream()
+                .sorted(Comparator.comparing(EvolutionjDTO::getTime))
+                .collect(Collectors.toList());
+
+
+            evolutionGeneraljDTOList.add(new EvolutionGeneraljDTO(player,result));
+
+        });
+        return new ResponseEntity<>(evolutionGeneraljDTOList,HttpStatus.OK);
     }
 }
